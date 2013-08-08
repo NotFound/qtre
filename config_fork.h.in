@@ -1,0 +1,18 @@
+/* config_debug.h.in */
+
+#undef HAVE_FORK
+#undef HAVE_WORKING_FORK
+
+#undef HAVE_VFORK_H
+#undef HAVE_WORKING_VFORK
+
+#ifdef HAVE_VFORK_H
+#  include <vfork.h>
+#endif
+
+#ifndef HAVE_WORKING_VFORK
+#  ifndef HAVE_FORK
+#    error Cannot fork, configure error?
+#  endif
+#  define vfork fork
+#endif

@@ -1,0 +1,17 @@
+/* config_locale.h.in */
+
+#undef HAVE_LOCALE_H
+#undef HAVE_NL_TYPES_H
+#undef HAVE_LANGINFO_H
+
+#if HAVE_LOCALE_H
+#  include <locale.h>
+#endif
+
+#ifdef HAVE_NL_TYPES_H
+#  include <nl_types.h>
+#endif
+
+#ifdef HAVE_LANGINFO_H
+#  include <langinfo.h>
+#endif

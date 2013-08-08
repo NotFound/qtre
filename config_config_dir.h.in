@@ -1,0 +1,3 @@
+/* config_config_dir.h.in */
+
+#undef CONFIG_DIR

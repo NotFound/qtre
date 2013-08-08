@@ -1,0 +1,28 @@
+#
+# qtre.psf
+#
+# Product Specification File to distribute qtre
+# in hp-ux depot format.
+#
+# Autor: Julian Albo
+#
+
+depot
+	product
+		tag qtre
+
+		fileset
+			tag qtre-fileset
+
+			file_permissions -o root -g root
+
+			file -m 0755 ./qtre     /usr/contrib/bin/qtre
+			file -m 0644 ./qtre.pl  /etc/qtre.pl
+
+		end #fileset
+
+	end #product
+
+end #depot
+
+# End of qtre.psf

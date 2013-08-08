@@ -1,0 +1,4 @@
+/* config_streambuf.h.in */
+
+#undef HAVE_STREAMBUF
+#undef HAVE_STREAMBUF_H

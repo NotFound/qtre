@@ -1,0 +1,4 @@
+/* config_filebuf.h.in */
+
+#undef HAVE_EXT_STDIO_FILEBUF_H
+#undef FILEBUF_PARAMS

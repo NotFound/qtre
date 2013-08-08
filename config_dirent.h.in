@@ -1,0 +1,22 @@
+/* config_debug.h.in */
+
+#undef CLOSEDIR_VOID
+#undef HAVE_DIRENT_H
+#undef HAVE_SYS_NDIR_H
+#undef HAVE_SYS_DIR_H
+#undef HAVE_NDIR_H
+
+/* This is from autoconf manual */
+#if HAVE_DIRENT_H
+#  include <dirent.h>
+#  define NAMELEN(dirent) strlen((dirent)->d_name)
+#else
+#  define dirent direct
+#  define NAMELEN(dirent) (dirent)->namlen
+#  if HAVE_SYS_DIR_H
+#    include <sys/dir.h>
+#  endif
+#  if HAVE_NDIR_H
+#    include <ndir.h>
+#  endif
+#endif

@@ -1,0 +1,4 @@
+/* config_function.h.in */
+
+#undef HAVE_FUNCTION
+#undef HAVE_PRETTY_FUNCTION

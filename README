@@ -1,0 +1,240 @@
+README file for qtre.
+
+qtre: Quick Tool for Raw Editing.
+(C) 2000-2006 Julian Albo.
+
+Use and distribution: GPL license.
+
+Revision 28-jan-2006
+
+The menus are now in english by default. They can be translated
+to another language with the menu_rename function. The /etc/qtre.pl
+provided make the translation to spanish if the environment variable
+LANG begin with 'es'.
+
+Other texts are in english, and in this version there is no way to
+translate it other than editing the sources.
+
+
+***********************************************************
+		Compiling qtre.
+***********************************************************
+
+
+You need to have a version of perl 5 that can load dynamic modules,
+and the perl modules Config and ExtUtils::Embed.
+
+To compile the module that links with perl library the compiler
+used to build perl is used. You can override this by setting
+the CC value in configure, in this case the Config module is
+not used.
+
+Also the library ncurses and his headers are required, look for the
+packages ncurses and ncurses-dev, ncurses-devel or similar.
+
+ncursesw is used instead of ncurses if available. If not available
+using qtre under a locale that uses utf8 enconding can give
+unexpected results.
+
+To build qtre use the traditional ./configure ; make; make install
+
+Use ./configure --help or read the INSTALL file for details.
+
+The provided do_conf and do_confdeb scripts calls configure
+with my preferred options (/usr/local prefix, but qtre.pl installed
+in /etc instead of /usr/local/etc). The instructions assume
+this configuration is used.
+
+To install do "make install" as root. If you are upgrading form a
+previous version you may want to save your /etc/qtre.pl first, it
+will be overwriten.
+
+
+***********************************************************
+			Instructions.
+***********************************************************
+
+
+	Key assignments.
+
+
+These are the default key assignments, they can be modified from
+Perl or menu options.
+
+
+- Mini help: F1.
+
+- Menu: Ctrl-n, F10.
+
+- Save: F2
+
+- Quit: Ctrl-q. F8 closes current window and quit if no more windows.
+
+- Selection: Control-s or 'Select' key (if your keyboard has one),
+same for end selection.
+
+- Cut: Control-x.
+
+- Copy: Control-c.
+
+- Paste: Control-v.
+
+- Delete line: Control-y.
+
+- Find: Control-f.
+
+- Find again: Control-a
+
+- Replace: Control-r
+
+- Next window: F5
+
+- Execute macro: Control-k, key.
+
+- Evaluate a perl expression: Control-e.
+
+- Save current file and compile it: Control-o + c.
+
+- Change options used to compile: Control-o + o.
+
+- Save all files and execute 'make': F7 or Control-o + m.
+
+- Execute current line as shell command: F9
+
+- Open the man page of the word under the cursor in a new document in
+read only mode: F3
+
+
+	Initialization files.
+
+
+The following files are readed and executed during initializtion.
+
+	1- /etc/qtre.pl
+	2- .qtre.pl in user $HOME.
+	3- .qtre.pl in current directory.
+
+They are loaded as Perl packages. If one of them returns an error
+qtre aborts, unless the environment variable QTRE_NO_ABORT is set.
+
+The end_init function can be called from any of them to avoid reading
+the others. The third is also omitted if the environment variable
+QTRE_NO_DIR is set.
+
+If the environment variable QTRE_NO_INIT is set, none of those files
+are loaded.
+
+See also the security notes below.
+
+
+	Embedded Perl.
+
+
+Qtre has a Perl interpreter embedded, that can be used in several
+ways.
+
+- A Perl function can be assigned to a control key with the menu
+entry "perl / define control".
+
+- A Perl function can be associated to macro keys (control-k + key).
+This is done by defininig a function called qtre::macro_suffix,
+where suffix can be a lowercase letter, a number, ctrl_ + lowercase
+letter or the the charater code in uppercase hexadecimal for other
+keys.
+
+- The current line, the selected text, the clipboard content and
+text written in a dialog box can be executed using several entries
+in the perl menu.
+
+- Qtre predefines several functions that can be called from perl,
+they are defined inside the 'qtre' package, thus mey be prefixed
+with 'qtre::' unless your code includes a 'package qtre;'
+instruction. This functions can be redefined, to help when doing
+this, a copy of each function is defined inside the 'qtre::default'
+package so you can easily call the default version.
+
+- Several menu options call predefined perl functions. Also some
+functions are called, if exists, when doing several actions.
+Defininig or redefining this functions can be useful to alter the
+behaviour of qtre.
+
+- A regular expression search and replace can use a perl function
+to provide the result of the substitution. To do that specify p
+and f in the replace options, and a perl function name as text to
+be replaced. The function will be called with the matched text as
+first parameter and the subexpressions of the result as additional
+parameters.
+
+- The predefined funcions and his use can be consulted in the menu
+option "help/perl functions". There are several examples in the
+qtre.pl and .qtre.pl included.
+
+- The default qtre.pl redirects the Perl standard output file
+descriptor, to make it insert text in the current document. That
+way you can insert text with a simple print instruction.
+
+- The dynamic loader of modules is included, so you can use any Perl
+module inside qtre.
+
+
+	Command line options.
+
+
++num Go to the line number num in the first file opened. num
+must be an unsigned decimal integer.
+
+-- No more options. Afther this all paramters are considered
+filenames.
+
+Using - as fileneame means create a file by reading the standard
+input. In that case the standard error is used for interactive
+input and output, do not redirect it.
+
+
+	Editing remote files.
+
+
+If a filename has the format [user@]host:file the file is copied
+using scp in a temporary and this temporary is opened. When saving
+the temporary is saved and copied back to the remote host. The
+temporary is deleted when the file is closed.
+
+To open a local file with a name that contains ':' must be
+prefixed with ':'. Example: to open 'this:file' the name used
+must be: ':this:file'.
+
+Other ways to access remote files (ftp, http...) are not provided,
+but can be programmed using perl and perl modules. For example,
+the qtre.pl provided insert a menu option to load a file from a
+url.
+
+***********************************************************
+		IMPORTANT SECURITY NOTES.
+***********************************************************
+
+
+To avoid that malicious users can execute something in your
+name by modifying the qtre initialization files, before
+excuting them some checks are done:
+
+	- /etc/qtre.pl must be owned by root and others can't
+	have write permission in it. If the group is other
+	than root is also checked that the group does not have
+	write permission.
+
+	- .qtre.pl files must be owned by the current user and
+	the group and others must not have write permissions in
+	it.
+
+When any of this checks fails, the file is not loaded and a
+warning is showed. The warning is omitted if the environment
+variable QTRE_NO_WARN is set.
+
+
+			*	*	*
+
+
+Send comments and criticisms to: julian.notfound@gmail.com
+
+
+End of qtre README.

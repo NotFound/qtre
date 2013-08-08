@@ -1,0 +1,9 @@
+#! /bin/sh
+
+# My usual config for direct compiling.
+
+./configure \
+	--enable-debug \
+	--sysconfdir=/etc \
+	"$@" \
+	CXXFLAGS="-g -O3 -W -Wall -Wunused -Werror -Wno-deprecated"

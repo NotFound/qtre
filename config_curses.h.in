@@ -1,0 +1,4 @@
+/* config_curses.h.in */
+
+#undef HAVE_NCURSESW_NCURSES_H
+#undef HAVE_NCURSES_H

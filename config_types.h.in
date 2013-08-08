@@ -1,0 +1,5 @@
+/* config_types.h.in */
+
+#undef pid_t
+#undef uid_t
+#undef mode_t
