@@ -1,9 +1,9 @@
 # configure.ac for qtre
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.57)
+AC_PREREQ([2.72])
 
-AC_INIT(qtre, 0.1.0.0, julian.notfound@gmail.com)
+AC_INIT([qtre],[0.1.0.0],[julian.notfound@gmail.com])
 
 AC_CONFIG_HEADERS([config.h config_config_dir.h config_debug.h config_function.h config_types.h config_version.h config_locale.h config_filebuf.h config_streambuf.h config_curses.h config_dirent.h config_fork.h config_wait.h] )
 
@@ -79,7 +79,7 @@ AC_PROG_INSTALL
 #####################################################################
 
 
-AC_ARG_ENABLE(debug, AC_HELP_STRING(
+AC_ARG_ENABLE(debug, AS_HELP_STRING(
 	[--enable-debug], [Debug version [[no]]] ) )
 
 if test "$enable_debug" = "yes" ; then
@@ -98,15 +98,25 @@ fi
 if test "$enable_debug" = "yes" ; then
 
 AC_MSG_CHECKING(wheter the C++ compiler(${CXX}) supports __FUNCTION__)
-AC_TRY_COMPILE([#include <stdio.h>],[puts(__FUNCTION__);],
-	have_function=yes,have_function=no)
+AC_COMPILE_IFELSE(
+	[AC_LANG_PROGRAM](
+		[#include <stdio.h>],
+		[puts(__FUNCTION__);]
+	),
+	have_function=yes,
+	have_function=no)
 AC_MSG_RESULT($have_function)
 
 if test "$have_function" = "yes" ; then
 	AC_DEFINE(HAVE_FUNCTION, [1], [Has __FUNCTION__])
 	AC_MSG_CHECKING(wheter the C++ compiler(${CXX}) supports __PRETTY_FUNCTION__)
-	AC_TRY_COMPILE([#include <stdio.h>],[puts(__PRETTY_FUNCTION__);],
-		have_pretty_function=yes,have_pretty_function=no)
+	AC_COMPILE_IFELSE(
+		[AC_LANG_PROGRAM](
+			[#include <stdio.h>],
+			[puts(__PRETTY_FUNCTION__);]
+		),
+		have_pretty_function=yes,
+		have_pretty_function=no)
 	AC_MSG_RESULT($have_pretty_function)
 	if test "$have_pretty_function" = "yes" ; then
 		AC_DEFINE(HAVE_PRETTY_FUNCTION, [1], [Has __PRETTY_FUNCTION__])
@@ -157,24 +167,26 @@ AC_CHECK_HEADERS([ext/stdio_filebuf.h],[filebuf=yes],[filebuf=no])
 
 if test "$filebuf" = "yes"; then
 	AC_MSG_CHECKING([for filebuf constructor parameters])
-	AC_TRY_COMPILE(
-		[
-			#include <ext/stdio_filebuf.h>
-		],
-		[
-			__gnu_cxx::stdio_filebuf <char>
-				bufin (1, std::ios::in, size_t (1) );
-		],
-		filebuf_params=3
-		,
-		AC_TRY_COMPILE(
+	AC_COMPILE_IFELSE(
+		[AC_LANG_PROGRAM](
 			[
 				#include <ext/stdio_filebuf.h>
 			],
 			[
-				__gnu_cxx::stdio_filebuf <char>
-					bufin (1, std::ios::in, false, 1);
-			],
+				__gnu_cxx::stdio_filebuf <char>bufin (1, std::ios::in, size_t (1) );
+			]
+		),
+		filebuf_params=3
+		,
+		AC_COMPILE_IFELSE(
+			[AC_LANG_PROGRAM](
+				[
+					#include <ext/stdio_filebuf.h>
+				],
+				[
+					__gnu_cxx::stdio_filebuf <char>bufin (1, std::ios::in, false, 1);
+				]
+			),
 			filebuf_params=4
 			,
 			AC_MSG_RESULT([unknown])
@@ -184,13 +196,15 @@ if test "$filebuf" = "yes"; then
 	AC_MSG_RESULT([$filebuf_params])
 else
 	AC_MSG_CHECKING([for ifstream construction from file handle])
-	AC_TRY_COMPILE(
-		[
-			#include <fstream>
-		],
-		[
-			std::ifstream bufin (1);
-		],
+	AC_COMPILE_IFELSE(
+		[AC_LANG_PROGRAM](
+			[
+				#include <fstream>
+			],
+			[
+				std::ifstream bufin (1);
+			]
+		)
 		filebuf_params=0
 		AC_MSG_RESULT([yes])
 		,
