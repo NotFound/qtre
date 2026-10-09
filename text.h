@@ -83,7 +83,7 @@ public:
 
 	Text (bool useutf8);
 	virtual ~Text ();
-private:
+//private:
 	Text (const Text & other);
 public:
 	void operator = (const Text & other);

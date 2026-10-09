@@ -1,5 +1,5 @@
 // menuscreen.cpp
-// Revision 27-jan-2006
+// Revision 9-oct-2026
 
 #include "screenimpl.h"
 #include "menu.h"
@@ -13,7 +13,7 @@
 #include <memory>
 #include <algorithm>
 
-using std::auto_ptr;
+using std::unique_ptr;
 using std::for_each;
 
 using util::dim_array;
@@ -44,7 +44,7 @@ struct MenuOption {
 	{ }
 	Option * option (ScreenImpl & screen) const
 	{
-		auto_ptr <ScreenAction> paction;
+		unique_ptr <ScreenAction> paction;
 		switch (type)
 		{
 		case Function:
@@ -143,7 +143,7 @@ void MenuOptionAdder::operator () (const MenuOption & mop)
 {
 	TRF;
 
-	auto_ptr <Option> popt (mop.option (screen) );
+	unique_ptr <Option> popt (mop.option (screen) );
 	menu.addOption (popt.get () );
 	popt.release ();
 }
@@ -152,7 +152,7 @@ Menu * createSub (const MenuOption * mop, size_t nopts, ScreenImpl & screen)
 {
 	TRF;
 
-	auto_ptr <Menu> pmenu (new Menu);
+	unique_ptr <Menu> pmenu (new Menu);
 	Menu & menu= * pmenu.get ();
 	for_each (mop, mop + nopts, MenuOptionAdder (screen, menu) );
 	Menu * aux= pmenu.get ();
@@ -166,7 +166,7 @@ struct MenuList {
 	size_t nops;
 	Option * option (ScreenImpl & screen) const
 	{
-		auto_ptr <Menu> psubmenu (createSub (mop, nops, screen) );
+		unique_ptr <Menu> psubmenu (createSub (mop, nops, screen) );
 		Option * popt= new Option (str, psubmenu.get () );
 		psubmenu.release ();
 		return popt;
@@ -208,7 +208,7 @@ void MenuAdder::operator () (const MenuList & ml)
 {
 	TRF;
 
-	auto_ptr <Option> popt (ml.option (screen) );
+	unique_ptr <Option> popt (ml.option (screen) );
 	screen.menu_add_option (popt.get () );
 	popt.release ();
 }

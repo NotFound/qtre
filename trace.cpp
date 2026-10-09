@@ -1,5 +1,5 @@
 // trace.cpp
-// Revision 29-jan-2006
+// Revision 9-oct-2026
 
 #include "trace.h"
 
@@ -55,7 +55,7 @@ void showinfo (const char * enterexit, const char * funcname)
 {
 	* pout << traceindent () << enterexit << ' ';
 
-	if (std::uncaught_exception () )
+	if (std::uncaught_exceptions () )
 		* pout << "(throwing) ";
 
 	* pout << funcname;
@@ -146,7 +146,7 @@ void TraceFunc::message (const std::string & text)
 	{
 		* pout << traceindent () << shortname;
 
-		if (std::uncaught_exception () )
+		if (std::uncaught_exceptions () )
 			* pout << "(throwing) ";
 
 		* pout << ": " << text << endl;

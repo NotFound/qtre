@@ -2,7 +2,7 @@
 #define INCLUDE_SCREENIMPL_H
 
 // screenimpl.h
-// Revision 7-sep-2006
+// Revision 9-oct-2026
 
 #include "screen.h"
 #include "screenbase.h"
@@ -123,7 +123,7 @@ private:
 
 	TextFile * ptext;
 
-	std::auto_ptr <Text> pclipboard;
+	std::unique_ptr <Text> pclipboard;
 	//StatusLine & status;
 	//otermstream & ot;
 	//otermstream & mainwindow;

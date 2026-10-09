@@ -1,5 +1,5 @@
 // text.cpp
-// Revision 22-sep-2006
+// Revision 9-oct-2026
 
 #include "text.h"
 
@@ -16,7 +16,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <strstream>
 #include <vector>
 #include <algorithm>
 #include <new>
@@ -719,19 +718,19 @@ bool load_from_stream (std::istream & in, Text::VecLine & t, bool useutf8)
 				wchar_t wc;
 				if (mbtowc (& wc, & c, 1) != 1)
 				{
-					std::cerr << "HO!\n";
+					//std::cerr << "HO!\n";
 					static const size_t maxchar= 8;
 					char aux [maxchar];
 					aux [0]= c;
 					in >> c;
 					if (in)
 					{
-						std::cerr << "HI 1!\n";
+						//std::cerr << "HI 1!\n";
 						aux [1]= c;
 						mbtowc (0, 0, 0);
 						if (mbtowc (& wc, aux, 2) == 2)
 						{
-							std::cerr << "HI 2!\n";
+							//std::cerr << "HI 2!\n";
 							c= static_cast <unsigned char> (wc);
 						}
 						else
@@ -739,14 +738,14 @@ bool load_from_stream (std::istream & in, Text::VecLine & t, bool useutf8)
 							in >> c;
 							if (in)
 							{
-								std::cerr << "HI 3!\n";
+								//std::cerr << "HI 3!\n";
 								aux [2]= c;
 								mbtowc (0, 0, 0);
 								if (mbtowc (& wc, aux, 3) == 3)
 								{
-									std::cerr << "HI 4!\n";
+									//std::cerr << "HI 4!\n";
 									c= static_cast <unsigned char> (static_cast <unsigned int> (wc) );
-									std::cerr << static_cast <unsigned long> (wc) << ", " << static_cast <unsigned int> (c) << '\n';
+									//std::cerr << static_cast <unsigned long> (wc) << ", " << static_cast <unsigned int> (c) << '\n';
 								}
 							}
 						}
@@ -853,7 +852,7 @@ bool set_text (const char * str, Text::VecLine & t, bool useutf8)
 {
 	TRF;
 
-	std::istrstream in (str);
+	std::istringstream in (str);
 	return load_from_stream (in, t, useutf8);
 }
 

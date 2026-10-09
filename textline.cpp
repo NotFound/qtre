@@ -1,5 +1,5 @@
 // textline.cpp
-// Revision 29-jul-2009
+// Revision 9-oct-2026
 
 #include "textline.h"
 
@@ -15,7 +15,7 @@
 
 using std::string;
 using std::ostringstream;
-using std::auto_ptr;
+using std::unique_ptr;
 
 using util::to_string;
 
@@ -625,28 +625,28 @@ void VecTextLine::clear ()
 
 void VecTextLine::push_back ()
 {
-	auto_ptr <TextLine> ptr (new TextLine (flagutf8) );
+	unique_ptr <TextLine> ptr (new TextLine (flagutf8) );
 	vtl.push_back (ptr.get () );
 	ptr.release ();
 }
 
 void VecTextLine::push_back (const std::string & str)
 {
-	auto_ptr <TextLine> ptr (new TextLine (flagutf8, str) );
+	unique_ptr <TextLine> ptr (new TextLine (flagutf8, str) );
 	vtl.push_back (ptr.get () );
 	ptr.release ();
 }
 
 void VecTextLine::insert_at (size_t n)
 {
-	auto_ptr <TextLine> ptr (new TextLine (flagutf8) );
+	unique_ptr <TextLine> ptr (new TextLine (flagutf8) );
 	vtl.insert (vtl.begin () + n, ptr.get () );
 	ptr.release ();
 }
 
 void VecTextLine::insert_at (size_t n, const std::string & str)
 {
-	auto_ptr <TextLine> ptr (new TextLine (flagutf8, str) );
+	unique_ptr <TextLine> ptr (new TextLine (flagutf8, str) );
 	vtl.insert (vtl.begin () + n, ptr.get () );
 	ptr.release ();
 }

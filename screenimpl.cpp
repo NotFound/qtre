@@ -1,5 +1,5 @@
 // screenimpl.cpp
-// Revision 7-sep-2006
+// Revision 9-oct-2026
 
 #include "screenimpl.h"
 
@@ -47,7 +47,7 @@ using std::vector;
 using std::ostringstream;
 using std::set;
 using std::nothrow;
-using std::auto_ptr;
+using std::unique_ptr;
 using std::exception;
 using std::runtime_error;
 using std::swap;
@@ -505,10 +505,10 @@ qpRetCode ScreenImpl::callback (qpFuncCode f, int n, void * data)
 			#endif
 
 			TRDEB ("Adding option to menu");
-			auto_ptr <ScreenActionPerl> paction
+			unique_ptr <ScreenActionPerl> paction
 				(new ScreenActionPerl
 					(* this, pparam->perlfunc) );
-			auto_ptr <Option> popt (new Option
+			unique_ptr <Option> popt (new Option
 				(pparam->optionname, paction.get () ) );
 			paction.release ();
 			bool r= menu_insert_suboption (pparam->menuname,
@@ -2265,7 +2265,7 @@ void ScreenImpl::definecontrolkey (char k, const string & function)
 	TRDEBS ("Defining 'control-" << char (k + 'A') <<
 		"' as '" << function << '\'');
 
-	auto_ptr <ScreenActionPerl> paction
+	unique_ptr <ScreenActionPerl> paction
 		(new ScreenActionPerl (* this, function) );
 	addKeyAction (k + 1, paction.get () );
 	paction.release ();
@@ -2436,7 +2436,7 @@ void ScreenImpl::optionEditCopyToNew ()
 {
 	TRF;
 
-	auto_ptr <Text> clipaux;
+	unique_ptr <Text> clipaux;
 	if (! selection ().empty () )
 	{
 		clipaux.reset (new Text (usingutf8 () ) );

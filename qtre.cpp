@@ -1,5 +1,5 @@
 // qtre.cpp
-// Revision 29-jan-2006
+// Revision 9-oct-2026
 
 #include "termstream.h"
 #include "screen.h"
@@ -29,7 +29,7 @@ using std::string;
 using std::vector;
 using std::exception;
 using std::runtime_error;
-using std::auto_ptr;
+using std::unique_ptr;
 
 extern const string strVersion;
 extern const string strAbout1;
@@ -202,7 +202,7 @@ int qtre_main (int argc, char * * argv, char * * env)
 
 	// Screen is the main object of the application.
 
-	auto_ptr <Screen> pscreen (createScreen (useutf8, env) );
+	unique_ptr <Screen> pscreen (createScreen (useutf8, env) );
 	Screen & screen= * pscreen.get ();
 
 	FileLoader fl (screen);
